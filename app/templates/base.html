@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}AbruvaCare{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <a href="/">AbruvaCare</a>
+        </div>
+        <div class="nav-links">
+          <a href="/" class="nav-link active">For Patients</a>
+          <a href="#" class="nav-link">For Healthcare Providers</a>
+          <a href="mailto:hello@abruvacare.com" class="nav-link">Support</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">{% block content %}{% endblock %}</main>
+
+    <footer class="footer">
+      <p>&copy; 2025 AbruvaCare. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Enter Your Location - AbruvaCare{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Where are you located?</h2>
+    <p class="form-description">Enter your city or address</p>
+    
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+    
+    <form method="POST" action="/location" class="form">
+        <div class="form-group">
+            <label for="location_input">Location</label>
+            <input 
+                type="text" 
+                id="location_input" 
+                name="location_input" 
+                required 
+                placeholder="e.g., Vancouver, Coquitlam, or your address"
+                value="{{ location_input or '' }}"
+            >
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Continue</button>
+            <a href="/" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

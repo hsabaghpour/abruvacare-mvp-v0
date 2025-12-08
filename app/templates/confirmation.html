@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Confirmed - AbruvaCare{% endblock %}
+
+{% block content %}
+<div class="confirmation-container">
+    <div class="confirmation-content">
+        <div class="confirmation-icon">✓</div>
+        <h2>Thank you, {{ patient_name }}!</h2>
+        <p class="confirmation-message">
+            Your request for <strong>{{ centre_name }}</strong> has been received.
+        </p>
+        <p class="confirmation-details">
+            We'll contact you soon using your preferred method to confirm your appointment.
+        </p>
+        <a href="/" class="btn btn-primary">Return to Home</a>
+    </div>
+</div>
+{% endblock %}
+

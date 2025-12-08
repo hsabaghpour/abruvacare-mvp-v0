@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Find Centres - AbruvaCare{% endblock %}
+
+{% block content %}
+<div class="centres-container">
+    <h2>Matching Centres</h2>
+    <p class="search-info">
+        Showing results for <strong>{{ service_type }}</strong> in <strong>{{ location_input }}</strong>
+    </p>
+    
+    {% if centres %}
+    <div class="centres-grid">
+        {% for centre in centres %}
+        <div class="centre-card">
+            <h3>{{ centre.name }}</h3>
+            <p class="centre-address">{{ centre.address }}, {{ centre.city }}</p>
+            
+            {% if centre.availability_summary %}
+            <p class="centre-availability">{{ centre.availability_summary }}</p>
+            {% endif %}
+            
+            {% if centre.rating %}
+            <div class="centre-rating">
+                <span class="rating-value">★ {{ centre.rating }}</span>
+                {% if centre.rating_count %}
+                <span class="rating-count">({{ centre.rating_count }} reviews)</span>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            <a href="/book?centre_id={{ centre.id }}&location_input={{ location_input }}&service_type={{ service_type }}" 
+               class="btn btn-primary btn-small">
+                Book Appointment
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-results">
+        <p>No centres found matching your criteria.</p>
+        <a href="/service?location_input={{ location_input }}" class="btn btn-secondary">Try Different Service</a>
+        <a href="/location" class="btn btn-secondary">Change Location</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

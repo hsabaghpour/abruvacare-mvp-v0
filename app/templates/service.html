@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Service Type - AbruvaCare{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>What type of service do you need?</h2>
+    <p class="form-description">Select the service type that best matches your needs</p>
+    
+    <form method="POST" action="/service" class="form">
+        <input type="hidden" name="location_input" value="{{ location_input }}">
+        
+        <div class="form-group">
+            <label for="service_type">Service Type</label>
+            <select id="service_type" name="service_type" required>
+                <option value="">-- Please select --</option>
+                <option value="Maternity Clinic">Maternity Clinic</option>
+                <option value="Family Doctor">Family Doctor</option>
+                <option value="Physiotherapy">Physiotherapy</option>
+                <option value="Lactation Consultant">Lactation Consultant</option>
+                <option value="Mental Health">Mental Health</option>
+            </select>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Find Centres</button>
+            <a href="/location?location_input={{ location_input }}" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
