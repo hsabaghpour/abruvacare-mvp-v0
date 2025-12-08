@@ -1,44 +1,185 @@
-AbruvaCare – MVP V0 (Patient Flow Only) – Implementation Brief
+# AbruvaCare – MVP V0
 
-## Quick Start
+A patient-only web application for British Columbia, Canada that helps patients find and book appointments at healthcare centres.
 
-### Setup
+## 🚀 Getting Started (For Beginners)
 
-1. **Activate the virtual environment:**
+Follow these step-by-step instructions to get the project running on your local machine.
 
-   ```bash
-   source venv/bin/activate
-   ```
+### Prerequisites
 
-2. **Install/update dependencies (if needed):**
+Before you begin, make sure you have:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+- **Python 3.7 or higher** installed (Python 3.9+ recommended)
+- **Git** installed
+- A terminal/command prompt
 
-   Or run the setup script:
+**Check your Python version:**
 
-   ```bash
-   ./setup.sh
-   ```
+```bash
+python3 --version
+# or
+python --version
+```
 
-3. **Run the application:**
+If you don't have Python installed, download it from [python.org](https://www.python.org/downloads/).
 
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+### Step 1: Clone the Repository
 
-   Or use the run script:
+Open your terminal and navigate to where you want to save the project, then run:
 
-   ```bash
-   ./run.sh
-   ```
+```bash
+git clone https://github.com/hsabaghpour/abruvacare-mvp-v0.git
+cd abruvacare-mvp-v0
+```
 
-4. **Access the application:**
-   - Open your browser to: `http://localhost:8000`
-   - API docs available at: `http://localhost:8000/docs`
+### Step 2: Create a Virtual Environment
 
-The database will be automatically initialized and seeded with sample centres on first startup.
+A virtual environment keeps the project's dependencies separate from other Python projects on your computer.
+
+**On macOS/Linux:**
+
+```bash
+python3 -m venv venv
+```
+
+**On Windows:**
+
+```bash
+python -m venv venv
+```
+
+**Note:** If `python3` doesn't work, try `python` instead. If you have Python 3.9 installed, you can use `python3.9 -m venv venv` for better compatibility.
+
+### Step 3: Activate the Virtual Environment
+
+**On macOS/Linux:**
+
+```bash
+source venv/bin/activate
+```
+
+**On Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+You'll know it's activated when you see `(venv)` at the beginning of your terminal prompt.
+
+### Step 4: Install Dependencies
+
+Install all required Python packages:
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+This may take a minute or two. You should see packages being downloaded and installed.
+
+**Alternative: Use the setup script (macOS/Linux only):**
+
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+### Step 5: Run the Application
+
+Start the development server:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+**Alternative: Use the run script (macOS/Linux only):**
+
+```bash
+chmod +x run.sh
+./run.sh
+```
+
+You should see output like:
+
+```
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Application startup complete.
+```
+
+### Step 6: Open in Your Browser
+
+Open your web browser and go to:
+
+- **Main application:** http://localhost:8000
+- **API documentation:** http://localhost:8000/docs
+
+🎉 **Congratulations!** The application is now running!
+
+### What Happens on First Run?
+
+- The database (`abruvacare.db`) is automatically created
+- Sample healthcare centres are automatically added to the database
+- The server starts and is ready to accept requests
+
+### Stopping the Server
+
+To stop the server, press `Ctrl+C` in your terminal.
+
+### Troubleshooting
+
+**Problem: "command not found: python3"**
+
+- Try using `python` instead of `python3`
+- Make sure Python is installed and added to your PATH
+
+**Problem: "ModuleNotFoundError"**
+
+- Make sure you activated the virtual environment (you should see `(venv)` in your prompt)
+- Run `pip install -r requirements.txt` again
+
+**Problem: "Port 8000 already in use"**
+
+- Another application is using port 8000
+- Stop that application, or run uvicorn on a different port: `uvicorn app.main:app --reload --port 8001`
+
+**Problem: "asyncio.run" error**
+
+- You're using Python 3.6 or older
+- Upgrade to Python 3.7+ or use Python 3.9: `python3.9 -m venv venv`
+
+### Next Steps
+
+Once the application is running, try:
+
+1. Visit the landing page and click "Book Appointment"
+2. Enter a location (e.g., "Vancouver" or "Coquitlam")
+3. Select a service type
+4. Browse matching centres
+5. Submit a booking request
+
+---
+
+## 📋 Quick Reference
+
+**Activate virtual environment:**
+
+```bash
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate      # Windows
+```
+
+**Run the server:**
+
+```bash
+uvicorn app.main:app --reload
+```
+
+**Deactivate virtual environment:**
+
+```bash
+deactivate
+```
 
 ---
 
