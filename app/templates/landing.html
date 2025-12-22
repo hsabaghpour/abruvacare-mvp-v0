@@ -3,16 +3,143 @@
 {% block title %}AbruvaCare - Find the right care in British Columbia{% endblock %}
 
 {% block content %}
-<div class="hero">
-    <div class="hero-content">
-        <h1>Find the right care in British Columbia</h1>
-        <p class="hero-subtitle">
-            AbruvaCare helps pregnant, postpartum, and early-years patients find the care centres they need.
-        </p>
-        <div class="hero-actions">
-            <a href="/location" class="btn btn-primary">Book Appointment</a>
-        </div>
+<div class="hero-carousel-container">
+  <div class="hero-carousel" id="heroCarousel">
+    <!-- Slide 1 -->
+    <div class="carousel-slide active" style="background-image: url('/static/hero/slide1.jpg');">
+      <div class="carousel-content">
+        <h1>Need a Healthcare Service in British Columbia?</h1>
+        <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
+        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+      </div>
     </div>
+    
+    <!-- Slide 2 -->
+    <div class="carousel-slide" style="background-image: url('/static/hero/slide2.jpg');">
+      <div class="carousel-content">
+        <h1>Need a Healthcare Service in British Columbia?</h1>
+        <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
+        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+      </div>
+    </div>
+    
+    <!-- Slide 3 -->
+    <div class="carousel-slide" style="background-image: url('/static/hero/slide3.jpg');">
+      <div class="carousel-content">
+        <h1>Need a Healthcare Service in British Columbia?</h1>
+        <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
+        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+      </div>
+    </div>
+    
+    <!-- Slide 4 -->
+    <div class="carousel-slide" style="background-image: url('/static/hero/slide4.jpg');">
+      <div class="carousel-content">
+        <h1>Need a Healthcare Service in British Columbia?</h1>
+        <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
+        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Carousel Controls -->
+  <button class="carousel-arrow carousel-arrow-left" onclick="changeSlide(-1)" aria-label="Previous slide">
+    &#8249;
+  </button>
+  <button class="carousel-arrow carousel-arrow-right" onclick="changeSlide(1)" aria-label="Next slide">
+    &#8250;
+  </button>
+  
+  <!-- Carousel Indicators -->
+  <div class="carousel-indicators">
+    <button class="carousel-dot active" onclick="goToSlide(0)" aria-label="Go to slide 1"></button>
+    <button class="carousel-dot" onclick="goToSlide(1)" aria-label="Go to slide 2"></button>
+    <button class="carousel-dot" onclick="goToSlide(2)" aria-label="Go to slide 3"></button>
+    <button class="carousel-dot" onclick="goToSlide(3)" aria-label="Go to slide 4"></button>
+  </div>
 </div>
-{% endblock %}
 
+<script>
+  let currentSlide = 0;
+  let autoplayInterval;
+  let isPaused = false;
+  const totalSlides = 4;
+  const autoplayDelay = 5000; // 5 seconds
+
+  function showSlide(index) {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+    
+    // Wrap around
+    if (index >= totalSlides) currentSlide = 0;
+    if (index < 0) currentSlide = totalSlides - 1;
+    else currentSlide = index;
+    
+    // Update slides
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === currentSlide);
+    });
+    
+    // Update dots
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  function changeSlide(direction) {
+    showSlide(currentSlide + direction);
+    pauseAutoplayTemporarily();
+  }
+
+  function goToSlide(index) {
+    showSlide(index);
+    pauseAutoplayTemporarily();
+  }
+
+  function startAutoplay() {
+    if (isPaused) return;
+    autoplayInterval = setInterval(() => {
+      if (!isPaused) {
+        showSlide(currentSlide + 1);
+      }
+    }, autoplayDelay);
+  }
+
+  function pauseAutoplayTemporarily() {
+    clearInterval(autoplayInterval);
+    isPaused = true;
+    setTimeout(() => {
+      isPaused = false;
+      startAutoplay();
+    }, 10000); // Resume after 10 seconds
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.getElementById('heroCarousel');
+    
+    // Pause on hover
+    carousel.addEventListener('mouseenter', () => {
+      clearInterval(autoplayInterval);
+    });
+    
+    carousel.addEventListener('mouseleave', () => {
+      if (!isPaused) {
+        startAutoplay();
+      }
+    });
+    
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      } else if (e.key === 'ArrowRight') {
+        changeSlide(1);
+      }
+    });
+    
+    // Start autoplay
+    startAutoplay();
+  });
+</script>
+{% endblock %}

@@ -36,60 +36,67 @@ async def landing_page(request: Request):
 
 
 @app.get("/location", response_class=HTMLResponse)
-async def location_page_get(request: Request, error: Optional[str] = None):
-    """Location entry page (GET)"""
+async def location_page_get(
+    request: Request, 
+    service_type: str = Query(...),
+    error: Optional[str] = None
+):
+    """Location entry page (GET) - now second step after service"""
     return templates.TemplateResponse("location.html", {
         "request": request,
+        "service_type": service_type,
         "error": error
     })
 
 
 @app.post("/location")
-async def location_page_post(request: Request, location_input: str = Form(...)):
-    """Location entry page (POST)"""
+async def location_page_post(
+    request: Request,
+    service_type: str = Form(...),
+    location_input: str = Form(...)
+):
+    """Location entry page (POST) - redirects to centres"""
     if not location_input or not location_input.strip():
         return templates.TemplateResponse("location.html", {
             "request": request,
-            "error": "Location is required. Please enter your city or address.",
-            "location_input": location_input
+            "service_type": service_type,
+            "error": "Please enter your address (location)."
         })
     
-    # Redirect to service selection with location as query param
+    # Redirect to centres list with both params
     encoded_location = urllib.parse.quote(location_input.strip())
+    encoded_service = urllib.parse.quote(service_type)
     return RedirectResponse(
-        url=f"/service?location_input={encoded_location}",
+        url=f"/centres?location_input={encoded_location}&service_type={encoded_service}",
         status_code=303
     )
 
 
 @app.get("/service", response_class=HTMLResponse)
-async def service_page(request: Request, location_input: str = Query(...)):
-    """Service selection page"""
+async def service_page(request: Request, error: Optional[str] = None):
+    """Service selection page - now first step after landing"""
     return templates.TemplateResponse("service.html", {
         "request": request,
-        "location_input": location_input
+        "error": error
     })
 
 
 @app.post("/service")
 async def service_page_post(
     request: Request,
-    location_input: str = Form(...),
     service_type: str = Form(...)
 ):
-    """Service selection page (POST)"""
-    if not service_type:
+    """Service selection page (POST) - redirects to location"""
+    if not service_type or not service_type.strip():
         return templates.TemplateResponse("service.html", {
             "request": request,
-            "location_input": location_input,
-            "error": "Please select a service type"
+            "error": "Please choose a service."
         })
     
-    # Redirect to centres list with both params
-    encoded_location = urllib.parse.quote(location_input)
-    encoded_service = urllib.parse.quote(service_type)
+    # Redirect to location with service_type
+    encoded_service = urllib.parse.quote(service_type.strip())
     return RedirectResponse(
-        url=f"/centres?location_input={encoded_location}&service_type={encoded_service}",
+        url=f"/location?service_type={encoded_service}",
         status_code=303
     )
 
@@ -234,6 +241,18 @@ async def confirmation_page(request: Request):
         "patient_name": "there",
         "centre_name": "your selected centre"
     })
+
+
+@app.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
+    """About Us page"""
+    return templates.TemplateResponse("about.html", {"request": request})
+
+
+@app.get("/support", response_class=HTMLResponse)
+async def support_page(request: Request):
+    """Support page"""
+    return templates.TemplateResponse("support.html", {"request": request})
 
 
 # ==================== API Endpoints ====================

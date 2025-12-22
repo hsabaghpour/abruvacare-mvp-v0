@@ -4,14 +4,16 @@
 
 {% block content %}
 <div class="form-container">
-    <h2>What type of service do you need?</h2>
+    <h2>Please choose the service</h2>
     <p class="form-description">Select the service type that best matches your needs</p>
     
-    <form method="POST" action="/service" class="form">
-        <input type="hidden" name="location_input" value="{{ location_input }}">
-        
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+    
+    <form method="POST" action="/service" class="form" id="serviceForm">
         <div class="form-group">
-            <label for="service_type">Service Type</label>
+            <label for="service_type">Service Type *</label>
             <select id="service_type" name="service_type" required>
                 <option value="">-- Please select --</option>
                 <option value="Maternity Clinic">Maternity Clinic</option>
@@ -20,13 +22,37 @@
                 <option value="Lactation Consultant">Lactation Consultant</option>
                 <option value="Mental Health">Mental Health</option>
             </select>
+            <span class="error-text" id="serviceError" style="display: none;">Please choose a service.</span>
         </div>
         
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Find Centres</button>
-            <a href="/location?location_input={{ location_input }}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-primary" id="nextBtn" disabled>Next</button>
+            <a href="/" class="btn btn-secondary">Back</a>
         </div>
     </form>
 </div>
-{% endblock %}
 
+<script>
+  const serviceSelect = document.getElementById('service_type');
+  const nextBtn = document.getElementById('nextBtn');
+  const serviceError = document.getElementById('serviceError');
+  const form = document.getElementById('serviceForm');
+
+  serviceSelect.addEventListener('change', function() {
+    if (this.value) {
+      nextBtn.disabled = false;
+      serviceError.style.display = 'none';
+    } else {
+      nextBtn.disabled = true;
+    }
+  });
+
+  form.addEventListener('submit', function(e) {
+    if (!serviceSelect.value) {
+      e.preventDefault();
+      serviceError.style.display = 'block';
+      nextBtn.disabled = true;
+    }
+  });
+</script>
+{% endblock %}

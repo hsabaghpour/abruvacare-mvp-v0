@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Find Centres - AbruvaCare{% endblock %}
+{% block title %}List of Centres - Healthcare Providers - AbruvaCare{% endblock %}
 
 {% block content %}
 <div class="centres-container">
-    <h2>Matching Centres</h2>
+    <h2>List of Centres - Healthcare Providers</h2>
     <p class="search-info">
         Showing results for <strong>{{ service_type }}</strong> in <strong>{{ location_input }}</strong>
     </p>
@@ -17,7 +17,13 @@
             <p class="centre-address">{{ centre.address }}, {{ centre.city }}</p>
             
             {% if centre.availability_summary %}
-            <p class="centre-availability">{{ centre.availability_summary }}</p>
+            <p class="centre-availability">
+                <strong>Next available:</strong> {{ centre.availability_summary }}
+            </p>
+            {% else %}
+            <p class="centre-availability">
+                <strong>Next available:</strong> Contact for availability
+            </p>
             {% endif %}
             
             {% if centre.rating %}
@@ -38,11 +44,12 @@
     </div>
     {% else %}
     <div class="no-results">
-        <p>No centres found matching your criteria.</p>
-        <a href="/service?location_input={{ location_input }}" class="btn btn-secondary">Try Different Service</a>
-        <a href="/location" class="btn btn-secondary">Change Location</a>
+        <p>No centres found for this service near your location.</p>
+        <div class="no-results-actions">
+            <a href="/service" class="btn btn-secondary">Change Service</a>
+            <a href="/location?service_type={{ service_type }}" class="btn btn-secondary">Change Location</a>
+        </div>
     </div>
     {% endif %}
 </div>
 {% endblock %}
-

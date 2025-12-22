@@ -4,30 +4,57 @@
 
 {% block content %}
 <div class="form-container">
-    <h2>Where are you located?</h2>
-    <p class="form-description">Enter your city or address</p>
+    <h2>Please enter your Address (Location)</h2>
+    <p class="form-description">Enter your city or full address</p>
     
     {% if error %}
     <div class="error-message">{{ error }}</div>
     {% endif %}
     
-    <form method="POST" action="/location" class="form">
+    <form method="POST" action="/location" class="form" id="locationForm">
+        <input type="hidden" name="service_type" value="{{ service_type }}">
+        
         <div class="form-group">
-            <label for="location_input">Location</label>
+            <label for="location_input">Address (Location) *</label>
             <input 
                 type="text" 
                 id="location_input" 
                 name="location_input" 
                 required 
-                placeholder="e.g., Vancouver, Coquitlam, or your address"
+                placeholder="e.g., Vancouver, Coquitlam, or your full address"
                 value="{{ location_input or '' }}"
             >
+            <span class="error-text" id="locationError" style="display: none;">Please enter your address (location).</span>
         </div>
+        
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Continue</button>
-            <a href="/" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-primary" id="searchBtn" disabled>Search</button>
+            <a href="/service" class="btn btn-secondary">Back</a>
         </div>
     </form>
 </div>
-{% endblock %}
 
+<script>
+  const locationInput = document.getElementById('location_input');
+  const searchBtn = document.getElementById('searchBtn');
+  const locationError = document.getElementById('locationError');
+  const form = document.getElementById('locationForm');
+
+  locationInput.addEventListener('input', function() {
+    if (this.value.trim()) {
+      searchBtn.disabled = false;
+      locationError.style.display = 'none';
+    } else {
+      searchBtn.disabled = true;
+    }
+  });
+
+  form.addEventListener('submit', function(e) {
+    if (!locationInput.value.trim()) {
+      e.preventDefault();
+      locationError.style.display = 'block';
+      searchBtn.disabled = true;
+    }
+  });
+</script>
+{% endblock %}
