@@ -94,17 +94,18 @@ body {
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    transition: opacity 0.3s;
 }
 
-.brand-logo {
-    height: 40px;
+.brand-link:hover {
+    opacity: 0.9;
+}
+
+.brand-logo-home {
+    height: 50px;
     width: auto;
     object-fit: contain;
-}
-
-.brand-name {
-    color: white;
+    display: block;
 }
 
 .mobile-menu-toggle {
