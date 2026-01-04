@@ -11,7 +11,7 @@
     <div class="error-message">{{ error }}</div>
     {% endif %}
     
-    <form method="POST" action="/location" class="form" id="locationForm">
+    <form method="POST" action="{{ request.url.path }}" class="form" id="locationForm">
         <input type="hidden" name="service_type" value="{{ service_type }}">
         
         <div class="form-group">
@@ -29,7 +29,7 @@
         
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" id="searchBtn" disabled>Search</button>
-            <a href="/service" class="btn btn-secondary">Back</a>
+            <a href="{% if request.url.path.startswith('/patients') %}/patients/service{% else %}/service{% endif %}" class="btn btn-secondary">Back</a>
         </div>
     </form>
 </div>

@@ -46,8 +46,8 @@
     <div class="no-results">
         <p>No centres found for this service near your location.</p>
         <div class="no-results-actions">
-            <a href="/service" class="btn btn-secondary">Change Service</a>
-            <a href="/location?service_type={{ service_type }}" class="btn btn-secondary">Change Location</a>
+            <a href="{% if request.url.path.startswith('/patients') %}/patients/service{% else %}/service{% endif %}" class="btn btn-secondary">Change Service</a>
+            <a href="{% if request.url.path.startswith('/patients') %}/patients/location?service_type={{ service_type }}{% else %}/location?service_type={{ service_type }}{% endif %}" class="btn btn-secondary">Change Location</a>
         </div>
     </div>
     {% endif %}

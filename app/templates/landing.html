@@ -10,7 +10,7 @@
       <div class="carousel-content">
         <h1>Need a Healthcare Service in British Columbia?</h1>
         <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
-        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+        <a href="/patients/service" class="btn btn-primary btn-large">Get Started</a>
       </div>
     </div>
     
@@ -19,7 +19,7 @@
       <div class="carousel-content">
         <h1>Need a Healthcare Service in British Columbia?</h1>
         <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
-        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+        <a href="/patients/service" class="btn btn-primary btn-large">Get Started</a>
       </div>
     </div>
     
@@ -28,7 +28,7 @@
       <div class="carousel-content">
         <h1>Need a Healthcare Service in British Columbia?</h1>
         <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
-        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+        <a href="/patients/service" class="btn btn-primary btn-large">Get Started</a>
       </div>
     </div>
     
@@ -37,7 +37,7 @@
       <div class="carousel-content">
         <h1>Need a Healthcare Service in British Columbia?</h1>
         <p class="hero-subtext">You don't have to do this alone. Find nearby care with real availability and book sooner - without the endless searching.</p>
-        <a href="/service" class="btn btn-primary btn-large">Get Started</a>
+        <a href="/patients/service" class="btn btn-primary btn-large">Get Started</a>
       </div>
     </div>
   </div>
@@ -64,7 +64,8 @@
   let autoplayInterval;
   let isPaused = false;
   const totalSlides = 4;
-  const autoplayDelay = 5000; // 5 seconds
+  // Carousel timing: 4-6 seconds per SoW (currently 5s)
+  const autoplayDelay = 5000; // 5 seconds (configurable: 4000-6000ms range)
 
   function showSlide(index) {
     const slides = document.querySelectorAll('.carousel-slide');

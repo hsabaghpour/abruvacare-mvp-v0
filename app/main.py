@@ -10,6 +10,7 @@ from app.database import get_db, init_db
 from app.models import Centre, BookingRequest
 from app.schemas import BookingRequestCreate, BookingRequestResponse
 from app.seed_data import seed_centres
+from app.constants import SERVICE_TYPES
 
 app = FastAPI()
 
@@ -77,7 +78,8 @@ async def service_page(request: Request, error: Optional[str] = None):
     """Service selection page - now first step after landing"""
     return templates.TemplateResponse("service.html", {
         "request": request,
-        "error": error
+        "error": error,
+        "service_types": SERVICE_TYPES
     })
 
 
@@ -90,7 +92,8 @@ async def service_page_post(
     if not service_type or not service_type.strip():
         return templates.TemplateResponse("service.html", {
             "request": request,
-            "error": "Please choose a service."
+            "error": "Please choose a service.",
+            "service_types": SERVICE_TYPES
         })
     
     # Redirect to location with service_type
@@ -253,6 +256,111 @@ async def about_page(request: Request):
 async def support_page(request: Request):
     """Support page"""
     return templates.TemplateResponse("support.html", {"request": request})
+
+
+# ==================== SoW Route Aliases (/patients/*) ====================
+# These routes provide the SoW-required /patients/* structure while preserving
+# backward compatibility with existing routes
+
+@app.get("/patients", response_class=HTMLResponse)
+async def patients_landing_page(request: Request):
+    """Landing page - SoW alias for /"""
+    return templates.TemplateResponse("landing.html", {"request": request})
+
+
+@app.get("/patients/service", response_class=HTMLResponse)
+async def patients_service_page(request: Request, error: Optional[str] = None):
+    """Service selection page - SoW alias for /service"""
+    return templates.TemplateResponse("service.html", {
+        "request": request,
+        "error": error,
+        "service_types": SERVICE_TYPES
+    })
+
+
+@app.post("/patients/service")
+async def patients_service_page_post(
+    request: Request,
+    service_type: str = Form(...)
+):
+    """Service selection page (POST) - SoW alias, redirects to /patients/location"""
+    if not service_type or not service_type.strip():
+        return templates.TemplateResponse("service.html", {
+            "request": request,
+            "error": "Please choose a service.",
+            "service_types": SERVICE_TYPES
+        })
+    
+    # Redirect to location with service_type (using /patients/location)
+    encoded_service = urllib.parse.quote(service_type.strip())
+    return RedirectResponse(
+        url=f"/patients/location?service_type={encoded_service}",
+        status_code=303
+    )
+
+
+@app.get("/patients/location", response_class=HTMLResponse)
+async def patients_location_page_get(
+    request: Request, 
+    service_type: str = Query(...),
+    error: Optional[str] = None
+):
+    """Location entry page (GET) - SoW alias for /location"""
+    return templates.TemplateResponse("location.html", {
+        "request": request,
+        "service_type": service_type,
+        "error": error
+    })
+
+
+@app.post("/patients/location")
+async def patients_location_page_post(
+    request: Request,
+    service_type: str = Form(...),
+    location_input: str = Form(...)
+):
+    """Location entry page (POST) - SoW alias, redirects to /patients/results"""
+    if not location_input or not location_input.strip():
+        return templates.TemplateResponse("location.html", {
+            "request": request,
+            "service_type": service_type,
+            "error": "Please enter your address (location)."
+        })
+    
+    # Redirect to results with both params (using /patients/results)
+    encoded_location = urllib.parse.quote(location_input.strip())
+    encoded_service = urllib.parse.quote(service_type)
+    return RedirectResponse(
+        url=f"/patients/results?location_input={encoded_location}&service_type={encoded_service}",
+        status_code=303
+    )
+
+
+@app.get("/patients/results", response_class=HTMLResponse)
+async def patients_results_page(
+    request: Request,
+    location_input: str = Query(...),
+    service_type: str = Query(...),
+    db: Session = Depends(get_db)
+):
+    """Results page - SoW alias for /centres"""
+    # Query centres matching location
+    all_centres = db.query(Centre).filter(
+        Centre.city.ilike(f"%{location_input}%")
+    ).all()
+    
+    # Filter by service type (check if service_type is in services list)
+    centres = [
+        centre for centre in all_centres
+        if centre.services and service_type in centre.services
+    ]
+    
+    return templates.TemplateResponse("centres.html", {
+        "request": request,
+        "centres": centres,
+        "location_input": location_input,
+        "service_type": service_type
+    })
 
 
 # ==================== API Endpoints ====================
