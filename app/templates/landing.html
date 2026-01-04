@@ -71,10 +71,21 @@
     const slides = document.querySelectorAll('.carousel-slide');
     const dots = document.querySelectorAll('.carousel-dot');
     
-    // Wrap around
-    if (index >= totalSlides) currentSlide = 0;
-    if (index < 0) currentSlide = totalSlides - 1;
-    else currentSlide = index;
+    // Safety check: ensure we have slides
+    if (slides.length === 0) return;
+    
+    // Wrap around properly - ensure index is always valid
+    if (index >= totalSlides) {
+      currentSlide = 0;
+    } else if (index < 0) {
+      currentSlide = totalSlides - 1;
+    } else {
+      currentSlide = index;
+    }
+    
+    // Ensure currentSlide is within valid range (defensive)
+    if (currentSlide < 0) currentSlide = 0;
+    if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
     
     // Update slides
     slides.forEach((slide, i) => {
@@ -88,7 +99,9 @@
   }
 
   function changeSlide(direction) {
-    showSlide(currentSlide + direction);
+    // Calculate next slide index with proper wrapping
+    let nextIndex = currentSlide + direction;
+    showSlide(nextIndex);
     pauseAutoplayTemporarily();
   }
 
@@ -98,6 +111,8 @@
   }
 
   function startAutoplay() {
+    // Clear any existing interval first
+    clearInterval(autoplayInterval);
     if (isPaused) return;
     autoplayInterval = setInterval(() => {
       if (!isPaused) {
@@ -109,10 +124,13 @@
   function pauseAutoplayTemporarily() {
     clearInterval(autoplayInterval);
     isPaused = true;
+    // Resume autoplay after 8 seconds (shorter delay for better UX)
     setTimeout(() => {
       isPaused = false;
-      startAutoplay();
-    }, 10000); // Resume after 10 seconds
+      if (!document.getElementById('heroCarousel').matches(':hover')) {
+        startAutoplay();
+      }
+    }, 8000);
   }
 
   // Initialize
@@ -125,6 +143,7 @@
     });
     
     carousel.addEventListener('mouseleave', () => {
+      // Resume autoplay when mouse leaves (if not temporarily paused)
       if (!isPaused) {
         startAutoplay();
       }
