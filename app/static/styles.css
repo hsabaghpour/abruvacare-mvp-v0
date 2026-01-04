@@ -50,6 +50,13 @@ body {
     text-decoration: none;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+}
+
+.brand-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
 }
 
 .brand-name {

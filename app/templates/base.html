@@ -12,24 +12,50 @@
         <div class="nav-container">
           <div class="nav-brand">
             <a href="/" class="brand-link">
+              <img src="/static/logo.png" alt="AbruvaCare Logo" class="brand-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
               <span class="brand-name">AbruvaCare</span>
             </a>
           </div>
-          <button class="mobile-menu-toggle" aria-label="Toggle menu" onclick="toggleMobileMenu()">
+          <button
+            class="mobile-menu-toggle"
+            aria-label="Toggle menu"
+            onclick="toggleMobileMenu()"
+          >
             <span></span>
             <span></span>
             <span></span>
           </button>
           <div class="nav-links" id="navLinks">
-            <a href="/" class="nav-link {% if request.url.path == '/' %}active{% endif %}">For Patients</a>
-            <a href="#" class="nav-link {% if request.url.path == '/providers' %}active{% endif %}">For Healthcare Providers</a>
-            <a href="/about" class="nav-link {% if request.url.path == '/about' %}active{% endif %}">About Us</a>
-            <a href="/support" class="nav-link {% if request.url.path == '/support' %}active{% endif %}">Support</a>
+            <a
+              href="/"
+              class="nav-link {% if request.url.path == '/' %}active{% endif %}"
+              >For Patients</a
+            >
+            <a
+              href="#"
+              class="nav-link {% if request.url.path == '/providers' %}active{% endif %}"
+              >For Healthcare Providers</a
+            >
+            <a
+              href="/about"
+              class="nav-link {% if request.url.path == '/about' %}active{% endif %}"
+              >About Us</a
+            >
+            <a
+              href="/support"
+              class="nav-link {% if request.url.path == '/support' %}active{% endif %}"
+              >Support</a
+            >
           </div>
         </div>
       </nav>
       <div class="canada-banner">
-        <img src="/static/canada-flag.png" alt="Canada Flag" class="flag-icon" onerror="this.style.display='none'">
+        <img
+          src="/static/canada-flag.png"
+          alt="Canada Flag"
+          class="flag-icon"
+          onerror="this.style.display='none'"
+        />
         <span class="canada-text">Proudly Canadian</span>
       </div>
     </header>
@@ -42,8 +68,8 @@
 
     <script>
       function toggleMobileMenu() {
-        const navLinks = document.getElementById('navLinks');
-        navLinks.classList.toggle('mobile-open');
+        const navLinks = document.getElementById("navLinks");
+        navLinks.classList.toggle("mobile-open");
       }
     </script>
   </body>
